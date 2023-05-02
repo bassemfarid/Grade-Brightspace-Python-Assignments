@@ -39,8 +39,9 @@ def group_files():
                     student_files[student_name] = []
                 student_files[student_name].append(student_file)
             else:
+                student_file = os.path.join(ASSIGNMENTS_DIR, filename)
                 student_files[filename] = []
-                student_files[filename].append(filename)
+                student_files[filename].append(student_file)
     return student_files
 
 
