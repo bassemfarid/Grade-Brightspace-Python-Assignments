@@ -8,11 +8,12 @@ ASSIGNMENTS_DIR = 'assignments'
 
 # Linting options for flake8
 # https://flake8.pycqa.org/en/latest/user/options.html
+# TODO: Move these options to a separate configuration file
 FLAKE8_OPTIONS = [
-    '--max-line-length=79',  # default is 79, PEP 8
+    '--max-line-length=79',  # default is 79 (PEP 8)
     '--ignore=E123,E126,E133,E226,W503,D205,D400',
     '--disable-noqa',  # In case NOQA is used for silencing
-    '--max-doc-length=72',  # PEP 8 suggestion
+    '--max-doc-length=72',  # PEP 8 standard
     '--statistics',
 ]
 
@@ -22,20 +23,24 @@ def group_files():
     student_files = {}
     for filename in os.listdir(ASSIGNMENTS_DIR):
         if filename.endswith('.py'):
-            if '-' in filename:
-                dash_sep_list = filename.split('-')
-                student_name = dash_sep_list[2][1:].replace(' ', '_').lower()
-                new_filename = student_name + '_' + dash_sep_list[4][1:]
-                student_file = os.path.join(ASSIGNMENTS_DIR, filename)
-                new_student_file = os.path.join(ASSIGNMENTS_DIR, new_filename)
-                os.rename(student_file, new_student_file)
-                student_file = new_student_file
+            if filename.count('-') > 1 or filename.count('_') > 1:
+                if '-' in filename:
+                    dash_sep_list = filename.split('-')
+                    student_name = dash_sep_list[2][1:].replace(' ', '_').lower()
+                    new_filename = student_name + '_' + dash_sep_list[4][1:]
+                    student_file = os.path.join(ASSIGNMENTS_DIR, filename)
+                    new_student_file = os.path.join(ASSIGNMENTS_DIR, new_filename)
+                    os.rename(student_file, new_student_file)
+                    student_file = new_student_file
+                else:
+                    student_file = os.path.join(ASSIGNMENTS_DIR, filename)
+                    student_name = filename[:filename.rindex('_')]
+                if student_name not in student_files:
+                    student_files[student_name] = []
+                student_files[student_name].append(student_file)
             else:
-                student_file = os.path.join(ASSIGNMENTS_DIR, filename)
-                student_name = filename[:filename.rindex('_')]
-            if student_name not in student_files:
-                student_files[student_name] = []
-            student_files[student_name].append(student_file)
+                student_files[filename] = []
+                student_files[filename].append(filename)
     return student_files
 
 
@@ -50,7 +55,6 @@ def lint_all_students(student_files):
     """Lint all student files."""
     for student in student_files:
         lint_results = lint_student_files(student_files[student])
-        # Write lint results to text file
         output_filename = student + '_lint_results.txt'
         output_file = os.path.join(ASSIGNMENTS_DIR, output_filename)
         with open(output_file, 'w') as f:
