@@ -6,6 +6,7 @@ import subprocess
 # directory possessing all of the student assignments requiring linting
 ASSIGNMENTS_DIR = 'assignments'
 
+# TODO: Should linter be transitioned to RUFF?
 # Linting options for flake8
 # https://flake8.pycqa.org/en/latest/user/options.html
 # TODO: Move these options to a separate configuration file
@@ -23,18 +24,29 @@ def group_files():
     student_files = {}
     for filename in os.listdir(ASSIGNMENTS_DIR):
         if filename.endswith('.py'):
+
+            # TODO: Make a better condition to check for Brightspace
+            # filename format
             if filename.count('-') > 1 or filename.count('_') > 1:
+
+                # TODO: Extract this into a func returning dict
                 if '-' in filename:
                     dash_sep_list = filename.split('-')
-                    student_name = dash_sep_list[2][1:].replace(' ', '_').lower()
+                    student_name = dash_sep_list[2][1:].replace(
+                        ' ', '_').lower()
                     new_filename = student_name + '_' + dash_sep_list[4][1:]
                     student_file = os.path.join(ASSIGNMENTS_DIR, filename)
-                    new_student_file = os.path.join(ASSIGNMENTS_DIR, new_filename)
+                    new_student_file = os.path.join(
+                        ASSIGNMENTS_DIR, new_filename)
                     os.rename(student_file, new_student_file)
                     student_file = new_student_file
+
+                # TODO: Wipe this case and combine with non-Brightspace
+                # filename case
                 else:
                     student_file = os.path.join(ASSIGNMENTS_DIR, filename)
                     student_name = filename[:filename.rindex('_')]
+
                 if student_name not in student_files:
                     student_files[student_name] = []
                 student_files[student_name].append(student_file)
