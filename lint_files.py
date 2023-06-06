@@ -22,7 +22,7 @@ FLAKE8_OPTIONS = [
 FLAKE8_STAT_OPTIONS = FLAKE8_OPTIONS + ['--quiet', '--statistics']
 
 FLAKE8_VERSION = subprocess.run(
-    'flake8 --version', capture_output=True, text=True).stdout
+    ['flake8', '--version'], capture_output=True, text=True).stdout
 
 
 def get_new_filename(file_meta: dict) -> str:
