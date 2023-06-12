@@ -92,7 +92,7 @@ def lint_student_files(student_name: str, student_files: list[str]) -> str:
     args = ['flake8'] + FLAKE8_OPTIONS + student_files
     result = subprocess.run(args, capture_output=True, text=True).stdout
 
-    intro_msg = f"Below are a list of problems with the formatting of your program according to PEP 8 standards. This has an effect on your communication and knowledge categories. To generate this list, The following flake8 version was used along with their extensions.\n{FLAKE8_VERSION}"  # NOQA
+    intro_msg = f"Below are a list of problems with the formatting of your program according to PEP 8 standards. This has an effect on your communication and knowledge categories. To generate this list, The following flake8 version was used along with its extensions.\n{FLAKE8_VERSION}"  # NOQA
 
     file_string = intro_msg + '\n--Files and Overall Stats--\n' + \
         stat_results + '\n--Detailed Results--\n' + result
