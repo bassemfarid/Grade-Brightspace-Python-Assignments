@@ -1,11 +1,14 @@
-# Grade Brightspace Python Assignments
+# Generate Linting Feedback for Python Assignments Submitted to Brightspace Dropbox
+
+## Purpose
+
 This project attempts to ease grading Python assignments from Brightspace by using packages to enforce standards and bulk generating *some* feedback and grades.
 
 The project mainly uses Flake8 that exercises multiple extensions and plugins to check for various standards. 
 
-## Standards
+### Standards
 This project uses common standards for Python, which were provided to students in a marking scheme.
-### Styling
+#### Styling
 [PEP 8](https://peps.python.org/pep-0008/) is the standard that will be used for grading styling. To check for some of these standards, Flake8 uses pycodestyle.
 
 
